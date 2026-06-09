@@ -11,7 +11,7 @@ import yt_dlp
 
 # ============================================================================
 # PROJE: YS Video Downloader (ysvdown)
-# SÜRÜM: v2.9 (MP3 Dönüştürme UX + Bug Fixes)
+# SÜRÜM: v3.0 (MP3 Dönüştürme UX + Bug Fixes)
 # YAPIM: Python + Tkinter + yt-dlp
 # DEĞİŞİKLİKLER:
 #   - ✅ Static import (Defender bypass)
@@ -63,7 +63,21 @@ ANALIZ_GECIKMESI_MS = 800  # Kullanıcı yazmayı bitirene kadar bekle
 PROGRESS_ANIMATION_SPEED = 10  # Indeterminate progress hızı
 SOCKET_TIMEOUT_FAST = 5  # Turbo kontrol için (saniye)
 SOCKET_TIMEOUT_NORMAL = 10  # Normal metadata çekimi için (saniye)
-VARSAYILAN_KAYIT_YERİ = os.path.join(os.path.expanduser("~"), "Desktop")
+def varsayilan_kayit_yeri_bul():
+    if sys.platform == 'win32':
+        try:
+            import winreg
+            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
+                r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders")
+            path, _ = winreg.QueryValueEx(key, "Desktop")
+            winreg.CloseKey(key)
+            # %USERPROFILE% gibi env variable içerebilir, expand et
+            return os.path.expandvars(path)
+        except Exception:
+            pass
+    return os.path.join(os.path.expanduser("~"), "Desktop")
+
+VARSAYILAN_KAYIT_YERİ = varsayilan_kayit_yeri_bul()
 MP3_KALITE = '192'  # kbps
 VIDEO_CRF = '23'  # FFmpeg kalite (0-51, düşük=iyi)
 FFMPEG_PRESET = 'fast'  # ultrafast, fast, medium, slow
@@ -94,7 +108,7 @@ def buton_disabled_renk():
 class YSVideoDownloader:
     def __init__(self, root):
         self.root = root
-        self.root.title("YS Video Downloader v2.9")
+        self.root.title("YS Video Downloader v3.0")
         self.root.geometry("700x740" if IS_MACOS else "700x720")
         
         # --- STİL AYARLARI ---

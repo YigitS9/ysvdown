@@ -13,8 +13,8 @@ OPTIONS = {
     'plist': {
         'CFBundleName': 'YS Video Downloader',
         'CFBundleDisplayName': 'YS Video Downloader v2.8',
-        'CFBundleVersion': '2.8.0',
-        'CFBundleShortVersionString': '2.8.0',
+        'CFBundleVersion': '3.0.0',
+        'CFBundleShortVersionString': '3.0.0',
         'LSMinimumSystemVersion': '12.0',
     }
 }
